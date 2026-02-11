@@ -1,8 +1,8 @@
 9 week project
 
 
-PID Cascaded Control
-Drone Tracking
+PID Cascaded Control,
+Drone Tracking,
 Moving Platform Precision Landing
 
 
