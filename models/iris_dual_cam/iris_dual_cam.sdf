@@ -1,0 +1,75 @@
+<?xml version='1.0'?>
+<sdf version='1.5'>
+  <model name='iris_dual_cam'>
+    <include>
+      <uri>model://iris</uri>
+    </include>
+
+    <link name="front_cam_link">
+      <pose>0.1 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0001</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.0001</iyy><iyz>0</iyz><izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry><box><size>0.03 0.03 0.03</size></box></geometry>
+        <material><script><name>Gazebo/Blue</name></script></material>
+      </visual>
+      <sensor name="front_camera" type="camera">
+      <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <camera>
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image><width>640</width><height>480</height></image>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <robotNamespace></robotNamespace>
+          <cameraName>usb_cam</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        </plugin>
+      </sensor>
+    </link>
+
+    <link name="down_cam_link">
+      <pose>0 0 -0.02 0 1.5708 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0001</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.0001</iyy><iyz>0</iyz><izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry><box><size>0.03 0.03 0.03</size></box></geometry>
+        <material><script><name>Gazebo/Red</name></script></material>
+      </visual>
+      <sensor name="downward_camera" type="camera">
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <camera>
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image><width>640</width><height>480</height></image>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <robotNamespace></robotNamespace>
+          <cameraName>down_cam</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="front_cam_joint" type="fixed">
+      <child>front_cam_link</child>
+      <parent>iris::base_link</parent>
+    </joint>
+    <joint name="down_cam_joint" type="fixed">
+      <child>down_cam_link</child>
+      <parent>iris::base_link</parent>
+    </joint>
+  </model>
+</sdf>

@@ -1,0 +1,16 @@
+material Aruco/Marker0
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        # 아까 textures 폴더에 넣은 파일명과 똑같아야 합니다.
+        texture marker_id0.png
+        filtering anisotropic
+        max_anisotropy 16
+      }
+    }
+  }
+}
