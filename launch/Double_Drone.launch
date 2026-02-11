@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find px4)/launch/multi_uav_mavros_sitl.launch">
+        <arg name="world" value="$(find mavlink_sitl_gazebo)/worlds/empty.world"/>
+    </include>
+
+    <node pkg="offboard_py" type="Double_Drone.py" name="Double_Drone" required="true" output="screen" />
+</launch>

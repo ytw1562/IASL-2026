@@ -1,0 +1,9 @@
+# .gitignore 내용
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.vscode/
+build/
+devel/
+*.bag

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/ground_plane"/>
+
+    <include file="$(find px4)/launch/mavros_posix_sitl.launch">
+        <arg name="vehicle" value="iris"/>
+        <arg name="sdf" value="$(find mavlink_sitl_gazebo)/models/iris_dual_cam/iris_dual_cam.sdf"/>
+        <arg name="world" value="$(arg world)"/>
+    </include>
+
+    <node pkg="offboard_py" type="Landing_Drone.py" name="Landing_Drone" output="screen" />
+
+    <group ns="target">
+        <node name="target_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+              args="-sdf -file /home/qwer/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/landing_target/landing_target.sdf -model landing_target -x -5 -y -9 -z 0"/>
+        <node name="Landing_target" pkg="offboard_py" type="Landing_target.py" output="screen" />
+    </group>
+</launch>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/empty.world"/>
+    <arg name="gui" default="true"/> <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
+    <arg name="paused" default="false"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+    </include>
+
+    <group ns="uav0">
+        <arg name="ID" value="0"/>
+        <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
+        
+        <node name="sitl_0" pkg="px4" type="px4" output="screen"
+            args="$(find px4)/build/px4_sitl_default/etc -s etc/init.d-posix/rcS -i $(arg ID) -w sitl_iris_$(arg ID)"/>
+
+        <node name="uav0_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+    	    args="-sdf -file $(find mavlink_sitl_gazebo)/models/iris_fpv_cam/iris_fpv_cam.sdf -model uav0 -x 0 -y 0 -z 0 -Y 0"/>
+
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="tgt_system" value="1"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+        
+        
+    </group>
+
+    <group ns="uav1">
+        <arg name="ID" value="1"/>
+        <arg name="fcu_url" default="udp://:14541@localhost:14581"/>
+        
+        <node name="sitl_1" pkg="px4" type="px4" output="screen"
+            args="$(find px4)/build/px4_sitl_default/etc -s etc/init.d-posix/rcS -i $(arg ID) -w sitl_iris_$(arg ID)"/>
+
+        <node name="uav1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+            args="-sdf -file $(find mavlink_sitl_gazebo)/models/iris_uav1/iris.sdf -model uav1 -x -4 -y 0 -z 0 -Y 3.14159"/>
+            
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="udp://:14541@localhost:14581"/>
+            <arg name="tgt_system" value="2"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+        
+        
+    </group>
+    <node name="YOLO_Data" pkg="offboard_py" type="YOLO_Data.py" required="true" output="screen"/>
+    
+</launch>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- Include the MAVROS node with SITL and Gazebo -->
+	<include file="$(find px4)/launch/mavros_posix_sitl.launch">
+		<arg name="vehicle" value="iris"/>
+        	<arg name="sdf" value="$(find mavlink_sitl_gazebo)/models/iris_fpv_cam/iris_fpv_cam.sdf"/>
+    	</include>
+
+	<!-- Our node to control the drone -->
+	<node pkg="offboard_py" type="offb_node_B.py" name="offb_node_py_B" required="true" output="screen" />
+</launch>
